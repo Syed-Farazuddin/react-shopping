@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RxEyeOpen } from "react-icons/rx";
 import { RiEyeCloseLine } from "react-icons/ri";
 import Layout from "../Layout/index";
+import { GlobalContext } from "../../context/Context";
 
 function NewPassword() {
-  const [pass, setPass] = useState("");
+  const { userInfo } = useContext(GlobalContext);
+  const [password, setPassword] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmNewPass, setConfirmNewPass] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -15,7 +17,7 @@ function NewPassword() {
   const navigate = useNavigate();
   const handleNewPassword = async (e) => {
     e.preventDefault();
-    if (!pass || !newPass || !confirmNewPass) {
+    if (!password || !newPass || !confirmNewPass) {
       setError("All fields are required");
       return;
     }
@@ -23,7 +25,9 @@ function NewPassword() {
       setError("Your password doesn't match");
       return;
     }
-    const response = await axios.post("http://localhost:4000/login", {
+
+    const response = await axios.post("http://localhost:4000/updatePassword", {
+      password,
       newPass,
     });
     const { data } = response;
@@ -35,6 +39,11 @@ function NewPassword() {
     }
   };
 
+  useEffect(() => {
+    if (userInfo === null || !userInfo) {
+      navigate("/login");
+    }
+  });
   return (
     <Layout>
       <div className="h-[100vh] flex items-center justify-center flex-col">
@@ -50,9 +59,9 @@ function NewPassword() {
               <input
                 type={`${showPass ? "text" : "password"}`}
                 className="rounded-lg border-none outline-none w-full"
-                value={pass}
+                value={password}
                 onChange={(e) => {
-                  setPass(e.target.value);
+                  setPassword(e.target.value);
                 }}
               />
               <p

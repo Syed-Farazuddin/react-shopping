@@ -74,7 +74,10 @@ const userLogin = async (req, res) => {
         message: "Incorrect password or email",
       });
     }
-    const token = await jsonwebtoken.sign(user.email, "JSON_SECRET_KEY");
+    const token = await jsonwebtoken.sign(
+      { email: user.email },
+      "JSON_SECRET_KEY"
+    );
     return res.status(200).json({
       success: true,
       message: "User registration done successfully",
@@ -146,7 +149,7 @@ const updatePassword = async (req, res) => {
   if (!newPass) {
     return res.json({ success: false, message: "New password is required" });
   }
-  let user = await userModel.findOne({ email });
+  let user = await userModel.findOne({ email: req.user.email });
   if (!user) {
     return res.json({
       success: false,
@@ -167,7 +170,35 @@ const updatePassword = async (req, res) => {
   });
 };
 
+const updateProfile = async (req, res) => {
+  let user = await userModel.findOne({ email: req.user.email });
+  if (!user) {
+    return res.json({ success: false, message: "User not found" });
+  }
+  const { name, email, secret, mobile, password } = req.body;
+  if (!password) {
+    return res.json({
+      success: false,
+      message: "Password is required to update your details",
+    });
+  }
+  const check = await bcrypt.compare(password, user.password);
+  if (!check) {
+    return res.json({ success: false, message: "Invalid Password" });
+  }
+  user.name = name || user.name;
+  user.email = email || user.email;
+  user.secret = secret || user.secret;
+  user.mobile = mobile || user.mobile;
+  await user.save();
+  return res.json({
+    success: true,
+    message: "User details updated successfully",
+  });
+};
+
 module.exports = {
+  updateProfile,
   userLogin,
   userRegister,
   checkUser,

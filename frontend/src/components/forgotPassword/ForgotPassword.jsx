@@ -42,7 +42,7 @@ function ForgotPassword() {
         <Link to={"/register"} className="flex text-white gap-4">
           <p className="text-slate-800">Don't have an Account ?</p>
           <span className="hover:underline cursor-pointer text-slate-900 font-semibold">
-            Create new password
+            Sign up
           </span>
         </Link>
       </div>

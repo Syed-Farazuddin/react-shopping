@@ -25,6 +25,7 @@ export default function LoginPage() {
     console.log(data);
     if (data.success) {
       localStorage.setItem("auth", JSON.stringify(data?.user));
+      localStorage.setItem("token", data?.user?.token);
       navigate("/");
     } else {
       setError(data.message);

@@ -1,12 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "../Layout/index";
 import { FaEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../context/Context";
 
 function Profile() {
+  const navigate = useNavigate();
   const { userInfo } = useContext(GlobalContext);
   console.log(userInfo);
+  useEffect(() => {
+    if (userInfo === null || !userInfo) {
+      navigate("/login");
+    }
+  });
   return (
     <Layout>
       <div className="container max-w-6xl mx-auto flex justify-center items-center mt-10 flex-col gap-5 w-full">
@@ -25,7 +31,7 @@ function Profile() {
               </Link>
             </div>
             <div>
-              <h1>{userInfo.name}</h1>
+              <h1>{userInfo?.name}</h1>
             </div>
           </div>
           <div className="flex flex-col w-full justify-between">
@@ -33,7 +39,7 @@ function Profile() {
               <p className="font-bold text-xl">Email</p>
             </div>
             <div>
-              <h1>{userInfo.email}</h1>
+              <h1>{userInfo?.email}</h1>
             </div>
           </div>
           <div className="flex flex-col w-full justify-between">
@@ -41,7 +47,9 @@ function Profile() {
               <p className="font-bold text-xl">Mobile Number</p>
             </div>
             <div>
-              <h1>{userInfo?.mobile?.length > 0 ? userInfo.mobile : "------"}</h1>
+              <h1>
+                {userInfo?.mobile?.length > 0 ? userInfo?.mobile : "--------"}
+              </h1>
             </div>
           </div>
           <div className="flex flex-col w-full justify-between">
@@ -57,7 +65,7 @@ function Profile() {
               <p className="font-bold text-xl">Secret</p>
             </div>
             <div>
-              <h1>{userInfo.secret}</h1>
+              <h1>{userInfo?.secret}</h1>
             </div>
           </div>
         </div>

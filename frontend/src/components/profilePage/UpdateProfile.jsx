@@ -4,6 +4,8 @@ import { RxEyeOpen } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import Layout from "../Layout/index";
 import { GlobalContext } from "../../context/Context";
+import axios from "axios";
+
 function UpdateProfile() {
   const { userInfo } = useContext(GlobalContext);
   const [name, setName] = useState(userInfo?.name);
@@ -12,17 +14,26 @@ function UpdateProfile() {
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState("");
   const [mobile, setMobile] = useState(userInfo?.mobile);
-  const handleSignIn = () => {
+  const [secret, setSecret] = useState(userInfo?.secret);
+  const handleUpdateProfile = async () => {
     if (!password) {
       setError("Password is required to update your fields");
       return;
     }
+    const response = await axios.put("http://localhost:4000/updateProfile", {
+      email,
+      password,
+      mobile,
+      secret,
+      name,
+    });
+    console.log(response);
   };
 
   return (
     <Layout>
-      <div className="flex items-center justify-center h-[100vh] flex-col loginContainer">
-        <div className="px-6 py-10 flex flex-col gap-5 bg-[#ffffff14] rounded-lg  w-[340px] border-2 border-slate-300">
+      <div className="flex items-center justify-center h-auto flex-col loginContainer">
+        <div className="px-6 py-10 flex flex-col gap-5 bg-[#ffffff14] rounded-lg  w-[340px] border-2 border-slate-300 mt-10">
           <h1 className="text-3xl text-center text-slate-800 font-bold">
             Update profile
           </h1>
@@ -65,6 +76,19 @@ function UpdateProfile() {
               className="px-4 py-2 rounded-lg border border-slate-500 outline-blue-900"
             />
           </div>
+          <div className="flex flex-col gap-2 ">
+            <label className="text-slate-800 " htmlFor="Email">
+              Secret key
+            </label>
+            <input
+              type="email"
+              onChange={(e) => {
+                setSecret(e.target.value);
+              }}
+              value={secret}
+              className="px-4 py-2 rounded-lg border border-slate-500 outline-blue-900"
+            />
+          </div>
           <div className="flex flex-col gap-2  outline-blue-900">
             <label className="text-slate-700 text-[18px]" htmlFor="password">
               Password
@@ -99,7 +123,9 @@ function UpdateProfile() {
           <Link to={"/change-password"}>Change your password?</Link>
           <button
             className="px-4 py-2 w-full bg-green-700 rounded-lg text-white"
-            onClick={handleSignIn}
+            onClick={() => {
+              handleUpdateProfile();
+            }}
           >
             Update Profile
           </button>

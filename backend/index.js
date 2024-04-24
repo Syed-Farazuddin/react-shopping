@@ -7,7 +7,12 @@ const {
   checkUser,
   forgotPass,
   updatePassword,
+  updateProfile,
 } = require("./controllers/UserAuth.js");
+const userAuth = require("./middlewares/authMiddleware.js");
+
+// const { userAuth } = require("./middleware/AuthMiddleware");
+
 const app = express();
 
 app.use(cors());
@@ -27,9 +32,11 @@ app.post("/register", userRegister);
 
 app.get("/check", checkUser);
 
-app.put("/updatePassword", updatePassword);
+app.put("/updatePassword", userAuth, updatePassword);
 
 app.put("/forgotPassword", forgotPass);
+
+app.put("/updateProfile", userAuth, updateProfile);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
