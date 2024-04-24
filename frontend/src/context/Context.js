@@ -7,11 +7,6 @@ export default function GlobalState({ children }) {
     ? JSON.parse(localStorage.getItem("auth"))
     : null;
 
-  // const userData = localStorage.getItem("auth");
-  // if (userData) {
-  //   setUserDetails(userData);
-  // }
-
   const [product, setProduct] = useState([
     {
       id: 1,

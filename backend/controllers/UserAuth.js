@@ -111,14 +111,13 @@ const forgotPass = async (req, res) => {
   if (!newpass) {
     return res.json({ success: false, message: "New password is required" });
   }
-  const user = await userModel.findOne({ email });
+  let user = await userModel.findOne({ email });
   if (!user) {
     return res.json({
       success: false,
       message: "Invalid email id or User doesn't exist",
     });
   }
-
   const savedSecret = user.secret;
   if (savedSecret !== secret) {
     return res.json({
@@ -136,4 +135,42 @@ const forgotPass = async (req, res) => {
   });
 };
 
-module.exports = { userLogin, userRegister, checkUser, forgotPass };
+const updatePassword = async (req, res) => {
+  const { email, password, newPass } = req.body;
+  if (!email) {
+    return res.json({ success: false, message: "Email is required" });
+  }
+  if (!password) {
+    return res.json({ success: false, message: "Password is required" });
+  }
+  if (!newPass) {
+    return res.json({ success: false, message: "New password is required" });
+  }
+  let user = await userModel.findOne({ email });
+  if (!user) {
+    return res.json({
+      success: false,
+      message: "Invalid email id or User doesn't exist",
+    });
+  }
+  const check = await bcrypt.compare(password, user.password);
+  if (!check) {
+    return res.json({ success: false, message: "Incorrect password" });
+  }
+  const hashPass = await bcrypt.hash(newPass, 10);
+  user.password = hashPass;
+  await user.save();
+  res.json({
+    success: true,
+    message: "Password updated successfully",
+    user,
+  });
+};
+
+module.exports = {
+  userLogin,
+  userRegister,
+  checkUser,
+  forgotPass,
+  updatePassword,
+};

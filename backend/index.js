@@ -6,6 +6,7 @@ const {
   userRegister,
   checkUser,
   forgotPass,
+  updatePassword,
 } = require("./controllers/UserAuth.js");
 const app = express();
 
@@ -25,6 +26,8 @@ app.post("/login", userLogin);
 app.post("/register", userRegister);
 
 app.get("/check", checkUser);
+
+app.put("/updatePassword", updatePassword);
 
 app.put("/forgotPassword", forgotPass);
 
