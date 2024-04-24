@@ -100,4 +100,40 @@ const checkUser = async (req, res) => {
   return res.json({ success: true, message: "User exist" });
 };
 
-module.exports = { userLogin, userRegister, checkUser };
+const forgotPass = async (req, res) => {
+  const { email, secret, newpass } = req.body;
+  if (!email) {
+    return res.json({ success: false, message: "Email is required" });
+  }
+  if (!secret) {
+    return res.json({ success: false, message: "Secret is required" });
+  }
+  if (!newpass) {
+    return res.json({ success: false, message: "New password is required" });
+  }
+  const user = await userModel.findOne({ email });
+  if (!user) {
+    return res.json({
+      success: false,
+      message: "Invalid email id or User doesn't exist",
+    });
+  }
+
+  const savedSecret = user.secret;
+  if (savedSecret !== secret) {
+    return res.json({
+      success: false,
+      message: "Secret key is invalid",
+    });
+  }
+  const hashPass = await bcrypt.hash(newpass, 10);
+  user.password = hashPass;
+  await user.save();
+  res.json({
+    success: true,
+    message: "Password updated successfully",
+    user,
+  });
+};
+
+module.exports = { userLogin, userRegister, checkUser, forgotPass };

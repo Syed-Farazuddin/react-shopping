@@ -5,6 +5,7 @@ const {
   userLogin,
   userRegister,
   checkUser,
+  forgotPass,
 } = require("./controllers/UserAuth.js");
 const app = express();
 
@@ -24,6 +25,8 @@ app.post("/login", userLogin);
 app.post("/register", userRegister);
 
 app.get("/check", checkUser);
+
+app.put("/forgotPassword", forgotPass);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

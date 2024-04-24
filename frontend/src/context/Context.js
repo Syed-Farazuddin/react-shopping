@@ -66,8 +66,13 @@ export default function GlobalState({ children }) {
   const [cart, setCart] = useState([]);
 
   const addToCart = (data) => {
-    console.log(data);
-    setCart([...cart, { ...data, quantity: 1 }]);
+    cart.filter((item) => {
+      if (item.id === data.id) {
+        console.log("Item already exist");
+      } else {
+        setCart([...cart, { ...data, quantity: 1 }]);
+      }
+    });
   };
 
   const removeFromCart = (id) => {
