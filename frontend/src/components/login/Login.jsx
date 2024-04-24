@@ -98,7 +98,7 @@ export default function LoginPage() {
         </div>
         <Link to={"/forgot-password"}>Forgot your password?</Link>
         <button
-          className="px-4 py-2 w-full bg-green-700 rounded-lg text-white"
+          className="px-4 py-2 w-full bg-slate-200 rounded-lg text-slate-950"
           onClick={handleSignIn}
         >
           Sign In

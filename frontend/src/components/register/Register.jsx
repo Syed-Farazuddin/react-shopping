@@ -46,7 +46,7 @@ export default function RegisterPage() {
         <Link to={"/login"} className="flex text-white gap-4">
           <p className="text-slate-800">Already have an Account ?</p>
           <span className="hover:underline cursor-pointer text-slate-900 font-semibold">
-            Sign up
+            Sign in
           </span>
         </Link>
       </div>
@@ -128,12 +128,12 @@ export default function RegisterPage() {
         </div>
 
         <button
-          className="px-4 py-2 w-full bg-green-700 rounded-lg text-white"
+          className="px-4 py-2 w-full rounded-lg text-black bg-slate-200"
           onClick={(e) => {
             handleSignIn(e);
           }}
         >
-          Sign In
+          Sign Up
         </button>
       </div>
       <div className="flex gap-2 text-slate-800 mt-4">

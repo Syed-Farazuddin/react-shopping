@@ -9,11 +9,13 @@ import ForgotPassword from "./components/forgotPassword/ForgotPassword";
 import Profile from "./components/profilePage/Profile";
 import UpdateProfile from "./components/profilePage/UpdateProfile";
 import NewPassword from "./components/updatePassword/NewPassword";
+import AdminDashboard from "./components/Admin/AdminDashboard";
 function App() {
   return (
     <>
       <Routes>
         <Route path="/cart" element={<CartList />} />
+        <Route path="/admin-Dashboard" element={<AdminDashboard />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<ProductList />} />
