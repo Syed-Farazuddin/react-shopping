@@ -20,13 +20,19 @@ function UpdateProfile() {
       setError("Password is required to update your fields");
       return;
     }
-    const response = await axios.put("http://localhost:4000/updateProfile", {
-      email,
-      password,
-      mobile,
-      secret,
-      name,
-    });
+    const response = await axios.put(
+      "http://localhost:4000/updateProfile",
+      {
+        email,
+        password,
+        mobile,
+        secret,
+        name,
+      },
+      {
+        Headers: { Authorization: localStorage.getItem("token") },
+      }
+    );
     console.log(response);
   };
 
